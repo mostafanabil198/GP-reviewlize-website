@@ -1,0 +1,8 @@
+<% @results.each do |r| %>
+  <ul>
+    <li><%= link_to  r[:title], show_product_path(product_url: r[:url]) %></li>
+    <li><%= r[:image]%></li>
+    <li><%=r[:url]%></li>
+    <li><%=r[:price]%></li>
+  </ul>
+<%end%>
