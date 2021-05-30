@@ -11,6 +11,17 @@ class AmazonProductScrapper < Kimurai::Base
 
   def parse(response, url:, data: {})
     @reviews_results ||= []
+    page_url = url
+    page_url = request_to :reviews_scrape, url: page_url
+    while(page_url.present?)
+      puts "----> #{page_url}"
+      page_url = URI.encode("https://www.amazon.com#{page_url.attribute("href").value.squish}")
+      page_url = request_to :reviews_scrape, url: page_url
+    end
+    return @reviews_results
+  end
+
+  def reviews_scrape(response, url:, data: )
     response.css(".a-section.review.aok-relative").each do |a|
       next if a.css(".a-section.a-spacing-none.a-spacing-top-small.cr-translate-this-review-section").present?
       review = a.css(".a-size-base.review-text.review-text-content span:not(.aok-hidden)").text.squish
@@ -18,10 +29,7 @@ class AmazonProductScrapper < Kimurai::Base
     end
 
     next_page = response.css(".a-pagination li:last-of-type a")
-    if(next_page.present?)
-      puts "----> #{next_page}"
-      request_to :parse, url:URI.encode("https://www.amazon.com#{next_page.attribute("href").value.squish}")
-    end
-    return @reviews_results
+    return next_page
   end
+
 end

@@ -1,0 +1,54 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ */
+
+ @import "bootstrap";
+ @import "font-awesome";
+
+ .search_bar {
+   width: 50%;
+    /* margin-right: 25px; */
+    height: 50px;
+    border-radius: 10px 0px 0px 10px;
+    border: 3px #2196F3 solid;
+    border-right: none;
+    outline: none;
+    padding: 15px;
+ }
+
+ .search_btn {
+   font-weight: bold;
+    height: 50px;
+    width: 80px;
+    border-radius: 0px 10px 10px 0px;
+    background: #2196F3;
+    border: none;
+    color: white;
+ }
+
+
+.product_img {
+    padding: 0.25rem;
+    background-color: #fff;
+    width: 60%;
+    object-fit: cover;
+}
+
+.analyze_btn{
+  background: #2296f3;
+  border: none;
+  border-radius: 5px;
+  height: 45px;
+  color: white;
+  font-weight: bold;
+}
