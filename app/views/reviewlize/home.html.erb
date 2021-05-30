@@ -2,3 +2,7 @@
   <%= f.text_field :search_word %>
   <%= f.submit :submit %>
 <% end %>
+
+<%= form_with url: destroy_user_session_path, method: :delete, local: true do |f| %>
+  <%= f.submit :sign_out %>
+<% end %>
