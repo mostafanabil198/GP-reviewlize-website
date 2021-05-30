@@ -3,8 +3,17 @@ class ReviewlizeController < ApplicationController
   end
 
   def index
-    search_word = params[:search_word]
-    @results = AmazonSearchScrapper.scrape(search_word)
+    if params[:search_word].match(/[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/)
+      if params[:search_word].match(/(?:https?:\/\/(?:www\.){0,1}amazon\.com(?:\/.*){0,1}(?:\/dp\/|\/gp\/product\/))(.+?)(?:\/.*|$)/)
+        @results = AmazonProductDataScrapper.scrape(params[:search_word])
+      else
+        redirect_to root_path
+        # error message Flash
+      end
+    else
+      search_word = params[:search_word]
+      @results = AmazonSearchScrapper.scrape(search_word)
+    end
   end
 
   def scrape_product
