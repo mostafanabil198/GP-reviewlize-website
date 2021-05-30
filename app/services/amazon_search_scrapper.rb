@@ -12,12 +12,13 @@ class AmazonSearchScrapper < Kimurai::Base
     puts url
     browser.fill_in "field-keywords", with: url.split(".com/?").last, wait: 1
     browser.click_on "Go", wait: 1
-
+  
     # Update response to current response after interaction with a browser
     response = browser.current_response
     # Collect results
-    response.css(".s-result-item.s-asin.sg-col-0-of-12.sg-col-16-of-20.sg-col.sg-col-12-of-16").first(5).each do |a|
-      url = a.css("h2 a.a-link-normal.a-text-normal").attribute('href').value
+    # File.write("responsee#{rand(1000)}.html", response)
+    response.css(".s-result-item.s-asin").first(5).each do |a|
+      url = a.css("h2 a.a-link-normal").attribute('href').value
       if a.css("span.aok-inline-block.s-sponsored-label-info-icon").count > 0 
         url = CGI.unescape(url.split("url=").last)
       end 
