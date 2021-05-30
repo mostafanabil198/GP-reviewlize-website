@@ -1,0 +1,15 @@
+<div>
+  <p>Analyzing!</p>
+  <%= "comparison: #{@comparison}" %>
+  <div class="d-flex flex-column my-5">
+    <% @products.each do |prod| %>
+      <h3><%= prod.name %></h3>
+      <p id="prod-<%= prod.id %>"><%= "analyzing..." %><p>
+      <script>
+        $.get( '<%= "#{scrape_product_url}?product_url=#{prod.url}"%>', function(data) {
+          $('#prod-<%= "#{prod.id}"%>').html(data.length)
+        });
+      </script>
+    <%end%>
+  </div>
+</div>

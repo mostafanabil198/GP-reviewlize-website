@@ -35,3 +35,20 @@
     border: none;
     color: white;
  }
+
+
+.product_img {
+    padding: 0.25rem;
+    background-color: #fff;
+    width: 60%;
+    object-fit: cover;
+}
+
+.analyze_btn{
+  background: #2296f3;
+  border: none;
+  border-radius: 5px;
+  height: 45px;
+  color: white;
+  font-weight: bold;
+}

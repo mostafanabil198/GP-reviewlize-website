@@ -9,8 +9,9 @@ class AmazonSearchScrapper < Kimurai::Base
 
   def parse(response, url:, data: {})
     @search_results = []
-    browser.fill_in "field-keywords", with: url.split("?").last
-    browser.click_on "Go"
+    puts url
+    browser.fill_in "field-keywords", with: url.split(".com/?").last, wait: 1
+    browser.click_on "Go", wait: 1
 
     # Update response to current response after interaction with a browser
     response = browser.current_response
@@ -28,7 +29,6 @@ class AmazonSearchScrapper < Kimurai::Base
       price = "#{a.css(".a-price-whole").text.squish}#{a.css(".a-price-fraction").text.squish}#{a.css(".a-price-symbol").text.squish}"
       # puts("=-=-=-=-=-=-=")
       @search_results << {title: title, price: price, url: url, image: image}
-      puts "================== added =========================="
     end
     return @search_results
   end

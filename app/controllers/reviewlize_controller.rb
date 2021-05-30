@@ -10,9 +10,10 @@ class ReviewlizeController < ApplicationController
     puts @results.first
   end
 
-  def show
+  def scrape_product
     product_url = params[:product_url]
     @reviews = AmazonProductScrapper.scrape(product_url)
+    render json: @reviews
   end
 
   def one_product_analysis
@@ -26,8 +27,23 @@ class ReviewlizeController < ApplicationController
         # redirect l controller bta3ha
       # comparison analysis
         # redirect l controller bta3ha
+
+    @products = []
     params[:products].each do |prod|
-      puts eval(prod)[:url]
+      prod = eval(prod)
+      product = Product.find_by(url: prod[:url])
+      if product.present?
+        @products << product
+      else
+        @products << Product.create(name: prod[:title], url: prod[:url], image_url: prod[:image], price: prod[:price], supported_website: SupportedWebsite.find_by(base_url: "#{prod[:url].split('.com').first}.com"))
+      end
     end
+
+    if @products.size > 1
+      @comparison = true
+    else
+      @comparison = false
+    end 
+
   end
 end
