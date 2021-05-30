@@ -1,10 +1,25 @@
-<% @results.each do |r| %>
-  <ul>
-  <div>
-    <%= image_tag(r[:image]) %>
-  </div>
-    <li><%= link_to  r[:title], show_product_path(product_url: r[:url]) %></li>
-    <li><%=r[:url]%></li>
-    <li><%=r[:price]%></li>
-  </ul>
-<%end%>
+
+<div class="d-flex flex-column justify-content-center align-items-center">
+  <%= form_with url: analyze_products_path, method: :post, local: true, html:{style:""} do |f| %>
+    <% @results.each do |r| %>
+      <%=f.check_box("products", {:multiple => true}, r, nil)%>
+      <a href="<%= r[:url] %>" class="d-flex justify-content-center">
+        <div class="card mb-3" style="width:80%">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="<%=r[:image]%>" class="img-thumbnail">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title"><%= r[:title] %></h5>
+                <p class="card-text"><%= r[:price] %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    
+    <%end%>
+    <%= f.submit %>
+  <%end%>
+</div>

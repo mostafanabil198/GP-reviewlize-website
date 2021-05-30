@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   root to: 'reviewlize#home'
   get 'search', to: "reviewlize#index", as: :search
   get 'show', to: "reviewlize#show", as: :show_product
+  post "analyze", to: 'reviewlize#analyze', as: :analyze_products
 end

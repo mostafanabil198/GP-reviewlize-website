@@ -14,7 +14,6 @@ class AmazonSearchScrapper < Kimurai::Base
 
     # Update response to current response after interaction with a browser
     response = browser.current_response
-
     # Collect results
     response.css(".s-result-item.s-asin.sg-col-0-of-12.sg-col-16-of-20.sg-col.sg-col-12-of-16").first(5).each do |a|
       url = a.css("h2 a.a-link-normal.a-text-normal").attribute('href').value
@@ -29,6 +28,7 @@ class AmazonSearchScrapper < Kimurai::Base
       price = "#{a.css(".a-price-whole").text.squish}#{a.css(".a-price-fraction").text.squish}#{a.css(".a-price-symbol").text.squish}"
       # puts("=-=-=-=-=-=-=")
       @search_results << {title: title, price: price, url: url, image: image}
+      puts "================== added =========================="
     end
     return @search_results
   end
