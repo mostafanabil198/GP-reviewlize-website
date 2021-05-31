@@ -19,6 +19,13 @@ class ReviewlizeController < ApplicationController
   def scrape_product
     product_url = params[:product_url]
     @reviews = AmazonProductScrapper.scrape(product_url)
+
+    # uri = URI('https://bearer.sh')
+    # response = Net::HTTP.post_form(uri, 'sentences[]' => @reviews)
+
+    
+    puts response.code, response.body
+
     render json: @reviews
   end
 
@@ -53,3 +60,11 @@ class ReviewlizeController < ApplicationController
 
   end
 end
+
+# def http_get(domain,path,params)
+#     return Net::HTTP.get_response(domain, "#{path}?".concat(params.collect { |k,v| "#{k}=#{CGI::escape(v.to_s)}" }.join('&'))) if not params.nil?
+#     return Net::HTTP.get(domain, path)
+# end
+
+# params = {:q => "ruby", :max => 50, :sentences => ["sasdas", "asfasf asfas ", "Asgasg"]}
+# print http_get("www.example.com", "/search.cgi", params)
