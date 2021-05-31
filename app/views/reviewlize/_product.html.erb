@@ -27,7 +27,7 @@
         <button class="update-btn" id="prod-analyze-<%=prod.id%>">Update Now!</button>
       </div>
 
-      <div id="prod-res-<%= prod.id %>">
+      <div id="prod-res-<%= prod.id %>" class="results-container">
         <%= render 'results' %>
       </div>
       <script>
@@ -39,7 +39,9 @@
         });
       </script>
     <% else %>
-      <div id="prod-res-<%= prod.id %>">analyzing...</div>
+      <div id="prod-res-<%= prod.id %>" class="results-container">
+        <div class="spinner"></div>
+      </div>
       <script>
         $.get( '<%= "#{scrape_product_url}?product_url=#{prod.url}"%>', function(data) {
           var result = "";
