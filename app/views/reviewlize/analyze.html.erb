@@ -1,28 +1,5 @@
-<div>
-  <p>Analyzing!</p>
-  <%= "comparison: #{@comparison}" %>
-  <div class="d-flex flex-column my-5">
+  <div class="row justify-content-center my-5", style="width:100%">
     <% @products.each do |prod| %>
-      <h3><%= prod.name %></h3>
-      <% if prod.result.present? %>
-        <button id="prod-analyze-<%=prod.id%>">Analyze Again</button>
-        <p id="prod-res-<%= prod.id %>">-1000-<p>
-        <script>
-          $("#prod-analyze-<%=prod.id%>").click(function(){
-            this.remove();
-            $.get( '<%= "#{scrape_product_url}?product_url=#{prod.url}"%>', function(data) {
-              $('#prod-res-<%= "#{prod.id}"%>').html(data.length)
-            });
-          });
-        </script>
-      <% else %>
-        <p id="prod-res-<%= prod.id %>"><%= "analyzing..." %><p>
-        <script>
-          $.get( '<%= "#{scrape_product_url}?product_url=#{prod.url}"%>', function(data) {
-            $('#prod-res-<%= "#{prod.id}"%>').html(data.length)
-          });
-        </script>
-      <%end%>
+      <%= render 'product', prod: prod%>
     <%end%>
   </div>
-</div>
