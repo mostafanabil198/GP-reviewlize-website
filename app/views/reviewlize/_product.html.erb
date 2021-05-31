@@ -21,7 +21,7 @@
 
     <a href="<%=prod.url%>" style="color:black"><%= prod.name.truncate(70) %></a>
 
-    <% if prod.result.present? %>
+    <% unless prod.result.present? %>
       <div class="d-flex justify-content-around last-analysis">
         <span style="font-size: 13px;font-weight: bold;">Last Update<br><%=prod.created_at.to_s.split(" ").first%></span>
         <button class="update-btn" id="prod-analyze-<%=prod.id%>">Update Now!</button>
@@ -32,9 +32,17 @@
       </div>
       <script>
         $("#prod-analyze-<%=prod.id%>").click(function(){
+          this.after('<div class="spinner"></div>');
           this.remove();
           $.get( '<%= "#{scrape_product_url}?product_url=#{prod.url}"%>', function(data) {
-            $('#prod-res-<%= "#{prod.id}"%>').html(data.length)
+            var result = "";
+            for (const item of Object.entries(data.results.aspect_analize)) {
+              const name = item[0];
+              const pos = item[1].positive;
+              const neg = item[1].negative;
+              result += `<div class="progress bg-danger my-2"><div class="progress-bar bg-success" role="progressbar" style="font-weight: bold;width: ${pos == 0 && neg == 0 ? 50 : pos/(pos+neg)*100}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">${name}</div></div>`
+            }
+            $('#prod-res-<%= "#{prod.id}"%>').html(result)
           });
         });
       </script>
