@@ -22,8 +22,8 @@ class ReviewlizeController < ApplicationController
 
     # uri = URI('https://bearer.sh')
     # response = Net::HTTP.post_form(uri, 'sentences[]' => @reviews)
+    response = Faraday.post("http://localhost:5000/predict", {sentences: @reviews}.to_json, "Content-Type" => "application/json")
 
-    
     puts response.code, response.body
 
     render json: @reviews
@@ -60,11 +60,3 @@ class ReviewlizeController < ApplicationController
 
   end
 end
-
-# def http_get(domain,path,params)
-#     return Net::HTTP.get_response(domain, "#{path}?".concat(params.collect { |k,v| "#{k}=#{CGI::escape(v.to_s)}" }.join('&'))) if not params.nil?
-#     return Net::HTTP.get(domain, path)
-# end
-
-# params = {:q => "ruby", :max => 50, :sentences => ["sasdas", "asfasf asfas ", "Asgasg"]}
-# print http_get("www.example.com", "/search.cgi", params)
