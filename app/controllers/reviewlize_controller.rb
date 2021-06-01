@@ -21,10 +21,20 @@ class ReviewlizeController < ApplicationController
     @reviews = AmazonProductScrapper.scrape(product_url)
 
      response = Faraday.post("http://localhost:5000/predict", {sentences: @reviews}.to_json, "Content-Type" => "application/json")
-     render json: response.body
+     #render json: response.body
+     response = response.body
 
     # response = {"results":{"aspect_analize":{"funny":{"negative":0,"neutral":0,"positive":1},"screen":{"negative":0,"neutral":0,"positive":1},"signs":{"negative":2,"neutral":3,"positive":0},"that":{"negative":0,"neutral":1,"positive":0},"when":{"negative":0,"neutral":1,"positive":0}},"aspects":["that","signs","when","signs","funny","screen"],"filtered":[["signs","minimal"],["signs","when"],["signs","wear"],["signs","damage"],["signs","showed"],["screen","great"],["funny","kind"],["when","notes"],["that","do"]]}}
     # render json: response.to_json
+    # response = Faraday.post("http://localhost:5000/predict", {sentences: @reviews}.to_json, "Content-Type" => "application/json")
+    # render json: response
+
+    
+    #response = {"results":{"aspect_analize":{"funny":{"negative":0,"neutral":0,"positive":1},"screen":{"negative":0,"neutral":0,"positive":1},"signs":{"negative":2,"neutral":3,"positive":0},"that":{"negative":0,"neutral":1,"positive":0},"when":{"negative":0,"neutral":1,"positive":0}},"aspects":["that","signs","when","signs","funny","screen"],"filtered":[["signs","minimal"],["signs","when"],["signs","wear"],["signs","damage"],["signs","showed"],["screen","great"],["funny","kind"],["when","notes"],["that","do"]]}}
+
+    Product.find_by(url: product_url).update(result: response.to_json)
+    
+    render json: response.to_json
   end
 
   def one_product_analysis
