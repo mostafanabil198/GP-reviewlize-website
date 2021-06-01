@@ -21,7 +21,7 @@
 
     <a href="<%=prod.url%>" style="color:black"><%= prod.name.truncate(70) %></a>
 
-    <% unless prod.result.present? %>
+    <% if prod.result.present? %>
       <div class="d-flex justify-content-around last-analysis">
         <span style="font-size: 13px;font-weight: bold;">Last Update<br><%=prod.created_at.to_s.split(" ").first%></span>
         <button class="update-btn" id="prod-analyze-<%=prod.id%>">Update Now!</button>
