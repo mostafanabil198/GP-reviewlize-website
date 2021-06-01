@@ -22,13 +22,23 @@ class ReviewlizeController < ApplicationController
 
     # response = Faraday.post("http://localhost:5000/predict", {sentences: @reviews}.to_json, "Content-Type" => "application/json")
     # response = response.body
-    # Product.find_by(url: product_url).update(result: response.to_json)
-    # render json: response
+    response = JSON.parse("{\"results\":{\"aspect_analize\":{\"funny\":{\"negative\":#{rand(10)},\"neutral\":0,\"positive\":#{rand(10)}},\"screen\":{\"negative\":#{rand(10)},\"neutral\":#{rand(10)},\"positive\":#{rand(10)}},\"signs\":{\"negative\":#{rand(10)},\"neutral\":3,\"positive\":#{rand(10)}},\"that\":{\"negative\":#{rand(10)},\"neutral\":1,\"positive\":#{rand(10)}},\"when\":{\"negative\":#{rand(10)},\"neutral\":1,\"positive\":#{rand(10)}}},\"aspects\":[\"that\",\"signs\",\"when\",\"signs\",\"funny\",\"screen\"],\"filtered\":[[\"signs\",\"minimal\"],[\"signs\",\"when\"],[\"signs\",\"wear\"],[\"signs\",\"damage\"],[\"signs\",\"showed\"],[\"screen\",\"great\"],[\"funny\",\"kind\"],[\"when\",\"notes\"],[\"that\",\"do\"]]},\"resultss\":1}")
 
-    response = {"results":{"aspect_analize":{"funny":{"negative":0,"neutral":0,"positive":1},"screen":{"negative":0,"neutral":0,"positive":1},"signs":{"negative":2,"neutral":3,"positive":0},"that":{"negative":0,"neutral":1,"positive":0},"when":{"negative":0,"neutral":1,"positive":0}},"aspects":["that","signs","when","signs","funny","screen"],"filtered":[["signs","minimal"],["signs","when"],["signs","wear"],["signs","damage"],["signs","showed"],["screen","great"],["funny","kind"],["when","notes"],["that","do"]]}}
-    Product.find_by(url: product_url).update(result: response.to_json)
-    render json: response.to_json
+    all_pos = 0
+    all_neg = 0
+    response["results"]["aspect_analize"].each do |k,v| 
+      all_neg += v["negative"]
+      all_pos += v["positive"]
+    end
+    rate = (all_pos.to_f/(all_pos+all_neg)*5).round(2)
+
+    Product.find_by(url: product_url).update(result: response.to_json, rate: rate, analyzed_reviews_count: @reviews.size)
+
+    response["rate"] = rate
+    response["reviews_count"] = @reviews.size
     
+    render json: response
+
   end
 
   def one_product_analysis
@@ -47,11 +57,11 @@ class ReviewlizeController < ApplicationController
     params[:products].each do |prod|
       prod = eval(prod)
       product = Product.find_by(url: prod[:url])
-      if product.present?
-        @products << product
-      else
-        @products << Product.create(name: prod[:title], url: prod[:url], image_url: prod[:image], price: prod[:price], supported_website: SupportedWebsite.find_by(base_url: "#{prod[:url].split('.com').first}.com"))
+      unless product.present?
+        product = Product.create(name: prod[:title], url: prod[:url], image_url: prod[:image], price: prod[:price], supported_website: SupportedWebsite.find_by(base_url: "#{prod[:url].split('.com').first}.com"))
       end
+      @products << product
+      @not_all_stored = true if product.result == nil
     end
 
     if @products.size > 1
