@@ -1,4 +1,5 @@
 class ReviewlizeController < ApplicationController
+  before_action :user_signed_in?
   def home
   end
 
@@ -61,4 +62,6 @@ class ReviewlizeController < ApplicationController
     end 
 
   end
+
+
 end
