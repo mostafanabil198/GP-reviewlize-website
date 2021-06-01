@@ -11,7 +11,8 @@ class AmazonProductDataScrapper < Kimurai::Base
     image = response.css(".a-dynamic-image-container img").attribute('src').value
     title = response.css("#titleSection").text.squish
     price = response.css("#priceblock_ourprice").text.squish
-
+    url = url.split("?").first.split("ref").first
+    
     return [{title: title, price: price, url: url, image: image}]
   end
 end

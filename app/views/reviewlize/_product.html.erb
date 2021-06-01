@@ -55,10 +55,11 @@
 
             $('#prod-res-<%= "#{prod.id}"%>').html(result)
             var rating = "";
+            var rate = all_pos/(all_pos+all_neg) * 5;
             rating += "<span>Reviewlize Rating</span>"
-            rating += `<h3>${all_pos/(all_pos+all_neg)}</h3>`
+            rating += `<h3>${rate}</h3>`
             var i = 0;
-            for(i; i < all_pos/(all_pos + all_neg); i++){
+            for(i; i < rate; i++){
               rating += "<i class=\"fa fa-star\" style=\"color:#2196F3\"></i>"
             }
             for(i; i < 5; i++){
@@ -89,10 +90,11 @@
           }
           $('#prod-res-<%= "#{prod.id}"%>').html(result)
           var rating = "";
+          var rate = all_pos/(all_pos+all_neg) * 5;
           rating += "<span>Reviewlize Rating</span>"
-          rating += `<h3>${all_pos/(all_pos+all_neg)}</h3>`
+          rating += `<h3>${rate}</h3>`
           var i = 0;
-          for(i; i < all_pos/(all_pos + all_neg); i++){
+          for(i; i < rate; i++){
             rating += "<i class=\"fa fa-star\" style=\"color:#2196F3\"></i>"
           }
           for(i; i < 5; i++){
