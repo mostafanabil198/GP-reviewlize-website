@@ -28,8 +28,8 @@ class AmazonSearchScrapper < Kimurai::Base
       title = "#{a.css("span.a-size-medium.a-color-base.a-text-normal").text.squish}"
       image = "#{a.css("img").attribute('src').value}"
       price = "#{a.css(".a-price-whole").text.squish}#{a.css(".a-price-fraction").text.squish}#{a.css(".a-price-symbol").text.squish}"
-      # puts("=-=-=-=-=-=-=")
-      @search_results << {title: title, price: price, url: url, image: image}
+      reviews_count = "#{a.css("a .a-size-base").text.squish}"
+      @search_results << {title: title, price: price, url: url, image: image, reviews_count: reviews_count}
     end
     return @search_results
   end
