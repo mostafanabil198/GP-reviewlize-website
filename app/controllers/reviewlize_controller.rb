@@ -62,7 +62,7 @@ class ReviewlizeController < ApplicationController
         return redirect_back fallback_location: root_path
       end
       if current_user
-        @history_record = current_user.history_records.create(search_title: params[:search_title], analysis_type: 0)
+        @history_record = current_user.history_records.create(search_title: params[:search_title])
       end
       @products = []
       params[:products].each do |prod|
@@ -77,9 +77,9 @@ class ReviewlizeController < ApplicationController
       end
 
       if @products.size > 1
-        @comparison = true
+        @history_record.update(analysis_type: 0)
       else
-        @comparison = false
+        @history_record.update(analysis_type: 1)
       end 
     end
   end
