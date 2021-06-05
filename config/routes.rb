@@ -5,4 +5,6 @@ Rails.application.routes.draw do
   get 'search', to: "reviewlize#index", as: :search
   get 'scrape_product', to: "reviewlize#scrape_product", as: :scrape_product
   get "analyze", to: 'reviewlize#analyze', as: :analyze_products
+
+  get "history", to: 'users#history', as: :user_history
 end

@@ -60,6 +60,9 @@ class ReviewlizeController < ApplicationController
       flash[:error] = "Choose at least one product to analyze!"
       return redirect_back fallback_location: root_path
     end
+    if current_user
+      @history_record = current_user.history_records.create(search_title: params[:search_title], analysis_type: 0)
+    end
     @products = []
     params[:products].each do |prod|
       prod = eval(prod)
@@ -68,6 +71,7 @@ class ReviewlizeController < ApplicationController
         product = Product.create(name: prod[:title], url: prod[:url], image_url: prod[:image], price: prod[:price], supported_website: SupportedWebsite.find_by(base_url: "#{prod[:url].split('.com').first}.com"))
       end
       @products << product
+      @history_record.history_products.create(product: product) if @history_record.present?
       @not_all_stored = true if product.result == nil
     end
 

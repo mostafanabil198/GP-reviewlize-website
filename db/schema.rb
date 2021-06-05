@@ -10,10 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_01_022228) do
+ActiveRecord::Schema.define(version: 2021_06_04_232443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "history_products", force: :cascade do |t|
+    t.bigint "history_record_id"
+    t.bigint "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["history_record_id"], name: "index_history_products_on_history_record_id"
+    t.index ["product_id"], name: "index_history_products_on_product_id"
+  end
+
+  create_table "history_records", force: :cascade do |t|
+    t.string "search_title"
+    t.integer "analysis_type"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_history_records_on_user_id"
+  end
 
   create_table "products", force: :cascade do |t|
     t.string "name"
@@ -49,5 +67,8 @@ ActiveRecord::Schema.define(version: 2021_06_01_022228) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "history_products", "history_records"
+  add_foreign_key "history_products", "products"
+  add_foreign_key "history_records", "users"
   add_foreign_key "products", "supported_websites"
 end
