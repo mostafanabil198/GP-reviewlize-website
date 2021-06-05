@@ -29,6 +29,7 @@ class AmazonSearchScrapper < Kimurai::Base
       image = "#{a.css("img").attribute('src').value}"
       price = "#{a.css(".a-price-whole").text.squish}#{a.css(".a-price-fraction").text.squish}#{a.css(".a-price-symbol").text.squish}"
       reviews_count = "#{a.css("a .a-size-base").text.squish}"
+      url = "https://www.amazon.com#{url.match(/(?:https?:\/\/(?:www\.){0,1}amazon\.com(?:\/.*){0,1}((?:\/dp\/|\/gp\/product\/)(.+?)))(?:\/.*|$)/)[1]}"
       @search_results << {title: title, price: price, url: url, image: image, reviews_count: reviews_count}
     end
     return @search_results

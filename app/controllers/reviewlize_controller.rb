@@ -50,36 +50,37 @@ class ReviewlizeController < ApplicationController
   end
 
   def analyze
-    # params => links of products
-    # 2 options
-      # analyze one products
-        # redirect l controller bta3ha
-      # comparison analysis
-        # redirect l controller bta3ha
-    unless params[:products].present?
-      flash[:error] = "Choose at least one product to analyze!"
-      return redirect_back fallback_location: root_path
-    end
-    if current_user
-      @history_record = current_user.history_records.create(search_title: params[:search_title], analysis_type: 0)
-    end
-    @products = []
-    params[:products].each do |prod|
-      prod = eval(prod)
-      product = Product.find_by(url: prod[:url])
-      unless product.present?
-        product = Product.create(name: prod[:title], url: prod[:url], image_url: prod[:image], price: prod[:price], supported_website: SupportedWebsite.find_by(base_url: "#{prod[:url].split('.com').first}.com"))
+    if current_user && params[:history]
+      @products = []
+      @history_record = HistoryRecord.find_by(id: params[:history_record_id])
+      @history_record.history_products.each do |hp|
+        @products << hp.product
       end
-      @products << product
-      @history_record.history_products.create(product: product) if @history_record.present?
-      @not_all_stored = true if product.result == nil
-    end
-
-    if @products.size > 1
-      @comparison = true
     else
-      @comparison = false
-    end 
+      unless params[:products].present?
+        flash[:error] = "Choose at least one product to analyze!"
+        return redirect_back fallback_location: root_path
+      end
+      if current_user
+        @history_record = current_user.history_records.create(search_title: params[:search_title], analysis_type: 0)
+      end
+      @products = []
+      params[:products].each do |prod|
+        prod = eval(prod)
+        product = Product.find_by(url: prod[:url])
+        unless product.present?
+          product = Product.create(name: prod[:title], url: prod[:url], image_url: prod[:image], price: prod[:price], supported_website: SupportedWebsite.find_by(base_url: "#{prod[:url].split('.com').first}.com"))
+        end
+        @products << product
+        @history_record.history_products.create(product: product) if @history_record.present?
+        @not_all_stored = true if product.result == nil
+      end
 
+      if @products.size > 1
+        @comparison = true
+      else
+        @comparison = false
+      end 
+    end
   end
 end
