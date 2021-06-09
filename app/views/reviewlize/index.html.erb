@@ -1,6 +1,7 @@
 
 <div class="d-flex flex-column justify-content-center align-items-center">
   <%= form_with url: analyze_products_path, method: :get, local: true, html:{style:""} do |f| %>
+    <%= f.hidden_field :search_title, value: params[:search_word] %>
     <% @results.each do |r| %>
         <div class="card mb-3">
           <div class="row g-0">

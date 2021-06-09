@@ -1,7 +1,7 @@
 class AmazonProductScrapper < Kimurai::Base
 
   def self.scrape(product_url)
-    product_url = product_url.split("dp/").first + "product-reviews/" + product_url.split("dp/").last[0...-1]
+    product_url = product_url.split("dp/").first + "product-reviews/" + product_url.split("dp/").last[0..-1]
     @start_urls = [product_url]
     # self.crawl!
     return self.parse!(:parse, url: product_url)
