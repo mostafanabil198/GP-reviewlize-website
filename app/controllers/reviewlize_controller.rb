@@ -1,5 +1,4 @@
 class ReviewlizeController < ApplicationController
-  before_action :user_signed_in?
   def home
   end
 
@@ -25,9 +24,9 @@ class ReviewlizeController < ApplicationController
     product_url = params[:product_url]
     @reviews = AmazonProductScrapper.scrape(product_url)
 
-    # response = Faraday.post("http://localhost:5000/predict", {sentences: @reviews}.to_json, "Content-Type" => "application/json")
-    # response = response.body
-    response = JSON.parse("{\"results\":{\"aspect_analize\":{\"funny\":{\"negative\":#{rand(10)},\"neutral\":0,\"positive\":#{rand(10)}},\"screen\":{\"negative\":#{rand(10)},\"neutral\":#{rand(10)},\"positive\":#{rand(10)}},\"signs\":{\"negative\":#{rand(10)},\"neutral\":3,\"positive\":#{rand(10)}},\"that\":{\"negative\":#{rand(10)},\"neutral\":1,\"positive\":#{rand(10)}},\"when\":{\"negative\":#{rand(10)},\"neutral\":1,\"positive\":#{rand(10)}}},\"aspects\":[\"that\",\"signs\",\"when\",\"signs\",\"funny\",\"screen\"],\"filtered\":[[\"signs\",\"minimal\"],[\"signs\",\"when\"],[\"signs\",\"wear\"],[\"signs\",\"damage\"],[\"signs\",\"showed\"],[\"screen\",\"great\"],[\"funny\",\"kind\"],[\"when\",\"notes\"],[\"that\",\"do\"]]},\"resultss\":1}")
+    response = Faraday.post("http://localhost:5000/predict", {sentences: @reviews}.to_json, "Content-Type" => "application/json")
+    response = JSON.parse(response.body)
+    #response = JSON.parse("{\"results\":{\"aspect_analize\":{\"funny\":{\"negative\":#{rand(10)},\"neutral\":0,\"positive\":#{rand(10)}},\"screen\":{\"negative\":#{rand(10)},\"neutral\":#{rand(10)},\"positive\":#{rand(10)}},\"signs\":{\"negative\":#{rand(10)},\"neutral\":3,\"positive\":#{rand(10)}},\"that\":{\"negative\":#{rand(10)},\"neutral\":1,\"positive\":#{rand(10)}},\"when\":{\"negative\":#{rand(10)},\"neutral\":1,\"positive\":#{rand(10)}}},\"aspects\":[\"that\",\"signs\",\"when\",\"signs\",\"funny\",\"screen\"],\"filtered\":[[\"signs\",\"minimal\"],[\"signs\",\"when\"],[\"signs\",\"wear\"],[\"signs\",\"damage\"],[\"signs\",\"showed\"],[\"screen\",\"great\"],[\"funny\",\"kind\"],[\"when\",\"notes\"],[\"that\",\"do\"]]},\"resultss\":1}")
 
     all_pos = 0
     all_neg = 0
