@@ -75,12 +75,13 @@ class ReviewlizeController < ApplicationController
         @history_record.history_products.create(product: product) if @history_record.present?
         @not_all_stored = true if product.result == nil
       end
-
-      if @products.size > 1
-        @history_record.update(analysis_type: 0)
-      else
-        @history_record.update(analysis_type: 1)
-      end 
+      if @history_record.present?
+        if @products.size > 1
+          @history_record.update(analysis_type: 0)
+        else
+          @history_record.update(analysis_type: 1)
+        end 
+      end
     end
   end
 
